@@ -26,7 +26,7 @@ class Piece
   end
 
   def to_s
-    " #{TYPES[@type]} ".colorize(:color => @color.to_sym, :background => back_ground(@pos))
+    "#{TYPES[@type]} ".colorize(:color => @color.to_sym, :background => back_ground(@pos))
   end
 
   private

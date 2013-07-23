@@ -14,14 +14,14 @@ class Board
 
   def populate_board
     [0,  7].each do |i|
-      @board[i][0] = Rook.new([0,0], i.zero? ? :blue : :red)
-      @board[i][1] = Knight.new([0,1], i.zero? ? :blue : :red)
-      @board[i][2] = Bishop.new([0,2], i.zero? ? :blue : :red)
-      @board[i][3] = King.new([0,3], i.zero? ? :blue : :red)
-      @board[i][4] = Queen.new([0,4], i.zero? ? :blue : :red)
-      @board[i][5] = Bishop.new([0,5], i.zero? ? :blue : :red)
-      @board[i][6] = Knight.new([0,6], i.zero? ? :blue : :red)
-      @board[i][7] = Rook.new([0,7], i.zero? ? :blue : :red)
+      @board[i][0] = Rook.new([i,0], i.zero? ? :blue : :red)
+      @board[i][1] = Knight.new([i,1], i.zero? ? :blue : :red)
+      @board[i][2] = Bishop.new([i,2], i.zero? ? :blue : :red)
+      @board[i][3] = King.new([i,3], i.zero? ? :blue : :red)
+      @board[i][4] = Queen.new([i,4], i.zero? ? :blue : :red)
+      @board[i][5] = Bishop.new([i,5], i.zero? ? :blue : :red)
+      @board[i][6] = Knight.new([i,6], i.zero? ? :blue : :red)
+      @board[i][7] = Rook.new([i,7], i.zero? ? :blue : :red)
     end
     [1, 6].each do |i|
       8.times do |j|
@@ -39,7 +39,7 @@ class Board
       string << "#{i} "
       row.each_with_index do |square, j|
         if !square.nil?
-          string << square.to_s   + ' '
+          string << square.to_s
         else
           string << ("  ").colorize(:background => back_ground(i, j))
         end
@@ -56,27 +56,30 @@ class Board
   def move_piece
     from_pos, to_pos = get_user_move
     x, y = from_pos
-    if @board[x][y].valid_move?(to_pos)
+    if @board[x][y].nil?
+      puts "There's nothing there"
+      move_piece
+    elsif @board[x][y].valid_move?(to_pos)
       @board[x][y].update_position(to_pos)
       i, j = to_pos
       @board[i][j], @board[x][y] = @board[x][y], nil
     else
+      puts "That's not a valid move."
       move_piece
     end
-    #gets piece to move from user via command line
-    #calls piece specific move
-    #which uses Piece class move method to update pieces location
-    #re-display board with updated positions
   end
 
   def get_user_move
-    puts "Which piece do you want to move?"
-    input = gets.chomp
-    #interpret input here
-    puts "Where should it go?"
-    input = gets.chomp
-    #interpret input here
+    puts "Which piece do you want to move? (letter number)"
+    from_coord = interpret_input(gets.chomp.split(" ").join(''))
+    puts "Where should it go?(letter number)"
+    to_coord = interpret_input(gets.chomp.split(" ").join(''))
     [from_coord, to_coord]
+  end
+
+  def interpret_input(string)
+    split_string = string.downcase.split("")
+    [split_string.last.to_i, split_string.first.ord - 97]
   end
 
 end

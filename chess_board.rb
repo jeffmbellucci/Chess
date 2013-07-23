@@ -70,15 +70,26 @@ class Board
   end
 
   def get_user_move
-    puts "Which piece do you want to move? (letter number)"
-    from_coord = interpret_input(gets.chomp.split(" ").join(''))
-    puts "Where should it go?(letter number)"
-    to_coord = interpret_input(gets.chomp.split(" ").join(''))
+    begin
+      puts "Which piece do you want to move? (letter number)"
+      from_coord = interpret_input(gets.chomp.split(" ").join(''))
+    rescue
+      puts "That's not a coordinate"
+      retry
+    end
+    begin
+      puts "Where should it go?(letter number)"
+      to_coord = interpret_input(gets.chomp.split(" ").join(''))
+    rescue
+      puts "That's not a coordinate"
+      retry
+    end
     [from_coord, to_coord]
   end
 
   def interpret_input(string)
     split_string = string.downcase.split("")
+    raise "Invalid Input" if string.length != 2
     [split_string.last.to_i, split_string.first.ord - 97]
   end
 

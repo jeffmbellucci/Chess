@@ -22,16 +22,20 @@ class Board
     string << "\n"
     @board.each_with_index do |row, i|
       string << "#{i} "
-      row.each do |square|
+      row.each_with_index do |square, j|
         if square.nil?
-          string << square.to_s + " "
+          string << (square.to_s + " ").colorize(:background => back_ground(i, j))
         else
-          string << "_ "
+          string << ("  ").colorize(:background => back_ground(i, j))
         end
       end
       string << "\n"
     end
     string
+  end
+
+  def back_ground(i, j)
+    ((i + j) % 2 == 1 ? :black : :white)
   end
 
   def move_piece

@@ -26,7 +26,13 @@ class Piece
   end
 
   def to_s
-    TYPES[@type].colorize(@color)
+    " #{TYPES[@type]} ".colorize(:color => @color.to_sym, :background => back_ground(@pos))
+  end
+
+  private
+  def back_ground(pos)
+    i, j = pos
+    ((i + j) % 2 == 1 ? :black : :white)
   end
 end
 
@@ -35,8 +41,8 @@ class Bishop < Piece
     super(pos, color, :bishop)
   end
 
-  def move(end_pos)
-    #check for valid bishop move
+  def valid_move?(end_pos)
+    #check for valid bishop valid_move?
     # raise error if invalid
   end
 end
@@ -46,8 +52,8 @@ class King < Piece
     super(pos, color, :king)
   end
 
-  def move(end_pos)
-    #check for valid bishop move
+  def valid_move?(end_pos)
+    #check for valid bishop valid_move?
     # raise error if invalid
   end
 end
@@ -57,8 +63,8 @@ class Knight < Piece
     super(pos, color, :knight)
   end
 
-  def move(end_pos)
-    #check for valid bishop move
+  def valid_move?(end_pos)
+    #check for valid bishop valid_move?
     # raise error if invalid
   end
 end
@@ -68,8 +74,9 @@ class Pawn < Piece
     super(pos, color, :pawn)
   end
 
-  def move(end_pos)
-    #check for valid bishop move
+  def valid_move?(end_pos)
+    true
+    #check for valid bishop valid_move?
     # raise error if invalid
   end
 end
@@ -79,8 +86,8 @@ class Queen < Piece
     super(pos, color, :queen)
   end
 
-  def move(end_pos)
-    #check for valid bishop move
+  def valid_move?(end_pos)
+    #check for valid bishop valid_move?
     # raise error if invalid
   end
 end
@@ -90,8 +97,8 @@ class Rook < Piece
     super(pos, color, :rook)
   end
 
-  def move(end_pos)
-    #check for valid bishop move
+  def valid_move?(end_pos)
+    #check for valid bishop valid_move?
     # raise error if invalid
   end
 end

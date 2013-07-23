@@ -39,6 +39,7 @@ class Board
   end
 
   def move_piece
+
     #gets piece to move from user via command line
     #calls piece specific move
     #which uses Piece class move method to update pieces location

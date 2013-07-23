@@ -1,14 +1,18 @@
+#encoding: UTF-8
 require "./chess_board"
+require 'colorize'
+
+
 class Piece
   attr_reader :color, :type
   attr_accessor :pos
   TYPES = {
-    :pawn => "P",
-    :knight => "K",
-    :rook => "R",
-    :bishop => "B",
-    :queen => "Q",
-    :king => "K"
+    :pawn => "♟",
+    :knight => "♞",
+    :rook => "♜",
+    :bishop => "♝",
+    :queen => "♚",
+    :king => "♛"
   }
   def initialize(pos, color, type)
     @pos = pos
@@ -37,3 +41,5 @@ class Bishop < Piece
     # raise error if invalid
   end
 end
+
+puts Bishop.new(1, :green).to_s.colorize(:red)

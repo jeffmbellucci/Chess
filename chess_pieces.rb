@@ -44,7 +44,7 @@ class Bishop < Piece
   def valid_move?(end_pos, board)
     delta_x = (end_pos.first - @pos.first)
     delta_y = (end_pos.last - @pos.last)
-    return false if delta_x.abs != delta_y.abs || delta_x == 0
+    return false if delta_x.abs != delta_y.abs
 
     sign_x = delta_x/delta_x.abs
     sign_y = delta_y/delta_y.abs
@@ -64,8 +64,10 @@ class King < Piece
   end
 
   def valid_move?(end_pos, board)
-    #check for valid bishop valid_move?
-    # raise error if invalid
+    delta_x = (end_pos.first - @pos.first).abs
+    delta_y = (end_pos.last - @pos.last).abs
+    return false if delta_x > 1 || delta_y > 1
+    true
   end
 end
 
@@ -75,8 +77,9 @@ class Knight < Piece
   end
 
   def valid_move?(end_pos, board)
-    #check for valid bishop valid_move?
-    # raise error if invalid
+    delta_x = (end_pos.first - @pos.first).abs
+    delta_y = (end_pos.last - @pos.last).abs
+    (delta_x == 2 && delta_y == 1) || (delta_x == 1 && delta_y == 2)
   end
 end
 
@@ -86,9 +89,21 @@ class Pawn < Piece
   end
 
   def valid_move?(end_pos, board)
+    delta_y = (end_pos.first - @pos.first)
+    delta_x = (end_pos.last - @pos.last)
+    if color == :white
+      return false if delta_y >= 0
+      return true if @pos.first == 6 && delta_y == -2 && delta_x == 0 &&
+                    board[end_pos[0]][end_pos[1]].nil?
+    else
+      return false if delta_y <= 0
+      return true if @pos.first == 1 && delta_y == 2 && delta_x == 0 &&
+                    board[end_pos[0]][end_pos[1]].nil?
+    end
+    return false if delta_x != 0 && board[end_pos[0]][end_pos[1]].nil?
+    return false if delta_x.abs > 1 || delta_y.abs > 1
+    return false if delta_x == 0 && !board[end_pos[0]][end_pos[1]].nil?
     true
-    #check for valid bishop valid_move?
-    # raise error if invalid
   end
 end
 

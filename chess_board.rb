@@ -57,7 +57,7 @@ class Board
     from_pos, to_pos = get_user_move
     x, y = from_pos
     if @board[x][y].nil?
-      puts "There's nothing there"
+      puts "You grabbed empty air, try again"
       move_piece
     elsif !@board[to_pos.first][to_pos.last].nil? &&
           @board[to_pos.first][to_pos.last].color == @board[x][y].color

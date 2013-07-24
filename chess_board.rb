@@ -10,6 +10,8 @@ class Board
       @board << row
     end
     populate_board
+    @current_color = :white
+    @turns = 0
   end
 
   def populate_board
@@ -56,11 +58,11 @@ class Board
   def move_piece
     from_pos, to_pos = get_user_move
     x, y = from_pos
-    if @board[x][y].nil?
-      puts "You grabbed empty air, try again"
+    if @board[x][y].nil? || @board[x][y].color != @current_color
+      puts "You can't grab that"
       move_piece
     elsif !@board[to_pos.first][to_pos.last].nil? &&
-          @board[to_pos.first][to_pos.last].color == @board[x][y].color
+          @board[to_pos.first][to_pos.last].color == @current_color
       puts "You can't take your own piece"
       move_piece
     elsif @board[x][y].valid_move?(to_pos, @board)
@@ -100,5 +102,20 @@ class Board
     output
   end
 
+  def play_chess
+    @current_color = :white
+    until game_won?
+      puts self
+      puts "#{@current_color.capitalize}'s turn:"
+      move_piece
+      p @current_color
+      @current_color = @current_color == :white ? :black : :white
+      @turns += 1
+    end
+  end
+
+  def game_won?
+    @turns > 10
+  end
 end
 

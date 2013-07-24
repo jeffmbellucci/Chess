@@ -29,6 +29,21 @@ class Piece
     "#{TYPES[@type]} ".colorize(:color => @color.to_sym, :background => back_ground(@pos))
   end
 
+  # def slide(dx, dy)
+  #   possibles = []
+  #   #recursively add to possibles until blocked
+  # end
+
+  def all_moves(board)
+    array_of_moves = []
+    8.times do |i|
+      8.times do |j|
+        array_of_moves << [i, j] if valid_move?([i, j], board)
+      end
+    end
+    array_of_moves
+  end
+
   private
   def back_ground(pos)
     i, j = pos
@@ -56,6 +71,12 @@ class Bishop < Piece
     end
     true
   end
+
+  # def valid_moves
+  #   options = []
+  #   options += slide(1,1)
+  #
+  # end
 end
 
 class King < Piece

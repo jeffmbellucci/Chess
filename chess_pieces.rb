@@ -11,8 +11,8 @@ class Piece
     :Knight => "♞",
     :Rook => "♜",
     :Bishop => "♝",
-    :Queen => "♚",
-    :King => "♛"
+    :Queen => "♛",
+    :King => "♚"
   }
   def initialize(pos, color)
     @pos = pos
@@ -27,10 +27,8 @@ class Piece
 
   def to_s
     type = self.class.to_s.to_sym
-    "#{TYPES[type]} ".colorize(:color => @color.to_sym, :background => back_ground(@pos))
+    "  #{TYPES[type]}   ".colorize(:color => @color.to_sym, :background => back_ground(@pos))
   end
-
-
 
   def all_moves(board)
     array_of_moves = []

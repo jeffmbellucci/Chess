@@ -44,20 +44,16 @@ class Bishop < Piece
   def valid_move?(end_pos, board)
     delta_x = (end_pos.first - @pos.first)
     delta_y = (end_pos.last - @pos.last)
-    delta_x < 0 ? sign_x = -1 : sign_x = 1
-    delta_y < 0 ? sign_y = -1 : sign_y = 1
+    return false if delta_x.abs != delta_y.abs || delta_x == 0
+
+    sign_x = delta_x/delta_x.abs
+    sign_y = delta_y/delta_y.abs
 
     pos = [@pos[0] + sign_x, @pos[1] + sign_y]
-
-    return false if delta_x.abs != delta_y.abs || delta_x == 0
     until pos == end_pos
       return false unless board[pos[0]][pos[1]].nil?
       pos = [pos[0] + sign_x, pos[1] + sign_y]
     end
-    #check for valid bishop valid_move?
-    # raise error if invalid
-
-    #check that move is diag
     true
   end
 end
@@ -102,8 +98,20 @@ class Queen < Piece
   end
 
   def valid_move?(end_pos, board)
-    #check for valid bishop valid_move?
-    # raise error if invalid
+    delta_x = (end_pos.first - @pos.first)
+    delta_y = (end_pos.last - @pos.last)
+    return false unless delta_x.abs == delta_y.abs ||
+                  (delta_x.zero? && !delta_y.zero?) ||
+                   (!delta_x.zero? && delta_y.zero?)
+    delta_x == 0 ? sign_x = 0 : sign_x = delta_x/delta_x.abs
+    delta_y == 0 ? sign_y = 0 : sign_y = delta_y/delta_y.abs
+
+    pos = [@pos[0] + sign_x, @pos[1] + sign_y]
+    until pos == end_pos
+      return false unless board[pos[0]][pos[1]].nil?
+      pos = [pos[0] + sign_x, pos[1] + sign_y]
+    end
+    true
   end
 end
 
@@ -113,7 +121,19 @@ class Rook < Piece
   end
 
   def valid_move?(end_pos, board)
-    #check for valid bishop valid_move?
-    # raise error if invalid
+    delta_x = (end_pos.first - @pos.first)
+    delta_y = (end_pos.last - @pos.last)
+    return false unless (delta_x.zero? && !delta_y.zero?) ||
+                   (!delta_x.zero? && delta_y.zero?)
+
+    delta_x == 0 ? sign_x = 0 : sign_x = delta_x/delta_x.abs
+    delta_y == 0 ? sign_y = 0 : sign_y = delta_y/delta_y.abs
+
+    pos = [@pos[0] + sign_x, @pos[1] + sign_y]
+    until pos == end_pos
+      return false unless board[pos[0]][pos[1]].nil?
+      pos = [pos[0] + sign_x, pos[1] + sign_y]
+    end
+    true
   end
 end

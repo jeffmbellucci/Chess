@@ -23,7 +23,7 @@ class Board
     new_board = Board.create_empty_board
     @board.each_with_index do |row, i|
       row.each_with_index do |piece, j|
-          new_board = piece.class.new(piece.color, [i, j]) if @board[i][j]
+          new_board[i][j] = piece.class.new([i, j], piece.color) if @board[i][j]
       end
     end
     new_board
@@ -76,7 +76,7 @@ class Board
     if taking_own_piece?(to_pos)
       puts "You can't take your own piece"
       turn
-    elsif check?(@current_color, move(from_pos, to_pos))
+    elsif check?(move(from_pos, to_pos))
       puts "Don't put yourself in check"
       turn
     elsif @board[x][y].valid_move?(to_pos, @board)
@@ -155,11 +155,12 @@ class Board
       @current_color = @current_color == :white ? :black : :white
       @turns += 1
     end
+    puts self
   end
 
   def game_won?
-    if check?(@current_color)
-      if check_mate?(@current_color)
+    if check?(@board)
+      if checkmate?
         puts "Game over, #{@current_color} loses"
         return true
       else
@@ -167,11 +168,48 @@ class Board
       end
     end
     false
-    @turns > 10
   end
-end
 
-def check?(color, board)
-  false
-end
 
+  def all_possible_opponent_moves(board)
+    all_moves = []
+    8.times do |i|
+      8.times do |j|
+        unless board[i][j].nil? || board[i][j].color == @current_color
+          all_moves += board[i][j].all_moves(board)
+        end
+      end
+    end
+    all_moves
+  end
+
+
+  def find_king(board)
+    8.times do |i|
+      8.times do |j|
+        piece = board[i][j]
+        return [i, j] if piece.class == King && piece.color == @current_color
+      end
+    end
+  end
+
+
+  def check?(board)
+    all_possible_opponent_moves(board).include?(find_king(board))
+  end
+
+  def checkmate?
+    8.times do |i|
+      8.times do |j|
+        piece = @board[i][j]
+        if !piece.nil? && piece.color == @current_color
+          piece.all_moves(@board).each do |pos|
+            return false unless check?(move([i,j], pos))
+          end
+        end
+      end
+    end
+    true
+  end
+
+end

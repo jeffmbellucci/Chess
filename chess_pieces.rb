@@ -39,7 +39,7 @@ class Piece
         if board[i][j].nil?
           array_of_moves << [i, j] if valid_move?([i, j], board)
         else
-          array of moves << [i, j] if color != board[i][j].color &&
+          array_of_moves << [i, j] if color != board[i][j].color &&
                                     valid_move?([i, j], board)
         end
       end
